@@ -1,6 +1,6 @@
 db.createUser(
     {
-        user: "jobie",
+        user: "job",
         pwd: "boards",
         roles: [
             { role: "readWrite", db: "jobBoards" }

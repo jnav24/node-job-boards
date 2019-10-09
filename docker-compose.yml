@@ -10,5 +10,5 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - .:/app
-      - ./scripts/:/docker-entrypoint-initdb.d
+      - ./scripts/js/:/app
+      - ./scripts/sh/:/docker-entrypoint-initdb.d
