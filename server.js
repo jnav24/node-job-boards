@@ -9,7 +9,12 @@ const port = 9000;
 
 const app = express();
 
-mongoose.connect('mongodb://root:root@localhost:27017/jobBoards');
+mongoose.connect('mongodb://job:boards@localhost:27017/jobBoards', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+const Postings = require('./models/postings');
 
 app.use(
     cors(),
@@ -22,7 +27,9 @@ app.use(
 
 app.post('/login', (req, res) => {
     const {email, password} = req.body;
-    const user = '';
+    const user = {
+        password: '',
+    };
 
     if (!user && user.password !== password) {
         res.sendStatus(401);
