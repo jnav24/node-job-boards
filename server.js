@@ -48,4 +48,24 @@ app.post('/login', async (req, res) => {
     res.send({ token });
 });
 
+app.post('/register', async (req, res) => {
+    const {email, password} = req.body;
+
+    if (!email || !password) {
+        res.sendStatus(401);
+        return;
+    }
+
+    const user = new Users({
+        _id: new mongoose.Types.ObjectId(),
+        email,
+        password: bcrypt.hashSync(password, saltRounds),
+    });
+    user.save();
+
+    res.send({
+        message: 'User added!',
+    });
+});
+
 app.listen(port, () => console.info(`server running on port ${port}`));
