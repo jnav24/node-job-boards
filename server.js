@@ -16,6 +16,8 @@ mongoose.connect('mongodb://job:boards@localhost:27017/jobBoards', {
     useUnifiedTopology: true,
 });
 
+const Companies = require('./models/companies');
+const Postings = require('./models/postings');
 const Users = require('./models/users');
 
 app.use(
@@ -27,6 +29,34 @@ app.use(
         credentialsRequired: false
     })
 );
+
+app.get('/postings', async (req, res) => {
+    try {
+        const postings = await Postings.find().exec();
+
+        if (!postings) {
+            throw new Error('Unable to get postings');
+        }
+
+        const companies = await Companies.find().exec();
+
+        const data = JSON.parse(JSON.stringify(postings)).map((posting) => {
+            posting.company = companies.find((company) => company._id.toString() === posting.companyId) || {name: '', description: ''};
+            return posting;
+        });
+
+        return res.status(200).send({
+            status: 200,
+            data,
+        });
+    } catch (error) {
+        const message = error.message || 'An unexpected error has occurred';
+        return res.status(401).send({
+            status: 401,
+            message,
+        });
+    }
+});
 
 app.post('/login', async (req, res) => {
     const {email, password} = req.body;
