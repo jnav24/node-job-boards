@@ -30,32 +30,32 @@ const insertData = async () => {
             _id: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f"),
             email: "alice@facegle.io",
             password: bcrypt.hashSync("alice123", saltRounds),
-            companyId: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f")
+            company: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f")
         },
         {
             _id: mongoose.Types.ObjectId("5d9df4b0b01527c99b96eaa0"),
             email: "bob@goobook.co",
             password: bcrypt.hashSync("bob123", saltRounds),
-            companyId: mongoose.Types.ObjectId("5d9df4b0b01527c99b96eaa0")
+            company: mongoose.Types.ObjectId("5d9df4b0b01527c99b96eaa0")
         }
     ]);
 
     Postings.insertMany([
         {
             _id: mongoose.Types.ObjectId("5d9df78eb01527c99b96eaa1"),
-            companyId: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f"),
+            company: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f"),
             title: "Frontend Developer",
             description: "We are looking for a Frontend Developer familiar with React."
         },
         {
             _id: mongoose.Types.ObjectId("5d9df78eb01527c99b96eaa2"),
-            companyId: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f"),
+            company: mongoose.Types.ObjectId("5d9df4b0b01527c99b96ea9f"),
             title: "Backend Developer",
             description: "We are looking for a Backend Developer familiar with Node.js and Express."
         },
         {
             _id: mongoose.Types.ObjectId("5d9df78eb01527c99b96eaa3"),
-            companyId: mongoose.Types.ObjectId("5d9df4b0b01527c99b96eaa0"),
+            company: mongoose.Types.ObjectId("5d9df4b0b01527c99b96eaa0"),
             title: "Full-Stack Developer",
             description: "We are looking for a Full-Stack Developer familiar with Node.js, Express, and React."
         }

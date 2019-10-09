@@ -32,22 +32,18 @@ app.use(
 
 app.get('/postings', async (req, res) => {
     try {
-        const postings = await Postings.find().exec();
+        const postings = await Postings
+            .find()
+            .populate('company')
+            .exec();
 
         if (!postings) {
             throw new Error('Unable to get postings');
         }
 
-        const companies = await Companies.find().exec();
-
-        const data = JSON.parse(JSON.stringify(postings)).map((posting) => {
-            posting.company = companies.find((company) => company._id.toString() === posting.companyId) || {name: '', description: ''};
-            return posting;
-        });
-
         return res.status(200).send({
             status: 200,
-            data,
+            data: postings,
         });
     } catch (error) {
         const message = error.message || 'An unexpected error has occurred';
