@@ -1,10 +1,14 @@
 version: '3'
 
 services:
-  db:
+  mongo:
+    container_name: jobBoardsDB
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - '27017:27017'
+    volumes:
+      - .:/app
+      - ./scripts/:/docker-entrypoint-initdb.d
