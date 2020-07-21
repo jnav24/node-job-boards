@@ -1,8 +1,10 @@
+const { ApolloServer, gql } = require('apollo-server-express');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const expressJwt = require('express-jwt');
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 const mongoose = require('mongoose');
@@ -29,6 +31,11 @@ app.use(
         credentialsRequired: false
     })
 );
+
+const typeDefs = gql(fs.readFileSync('./schema.graphql', { encoding: 'utf8' }));
+const resolvers = require('./resolvers');
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+apolloServer.applyMiddleware({ app, path: '/graphql' });
 
 app.get('/postings', async (req, res) => {
     try {
