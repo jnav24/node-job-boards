@@ -1,5 +1,7 @@
+const Jobs = require('./models/postings');
+
 const Query = {
-    greeting: () => 'Hello World!'
+    jobs: async () => await Jobs.find().exec(),
 };
 
 module.exports = {
