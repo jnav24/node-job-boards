@@ -2,6 +2,7 @@ const Companies = require('./models/companies');
 const Jobs = require('./models/postings');
 
 const Query = {
+    job: async (root, args) => await Jobs.findById(args.id).exec(),
     jobs: async () => await Jobs.find().exec(),
 };
 
