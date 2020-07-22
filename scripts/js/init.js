@@ -71,7 +71,7 @@ const insertData = async () => {
         ]);
     }
 
-    mongoose.disconnect();
+    // mongoose.disconnect();
 };
 
 exports.insertData = insertData;

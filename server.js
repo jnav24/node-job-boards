@@ -16,6 +16,7 @@ const app = express();
 
 init.insertData();
 
+// @todo delete this
 mongoose.connect('mongodb://job:boards@localhost:27017/jobBoards', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -72,10 +73,9 @@ app.post('/login', async (req, res) => {
         return;
     }
 
-    const hashPwd = bcrypt.hashSync(password, saltRounds);
     const user = await Users.findOne({ email }).exec();
 
-    if (!user || user.password !== hashPwd) {
+    if (!user || !bcrypt.compareSync(password, user.password)) {
         res.sendStatus(401);
         return;
     }
