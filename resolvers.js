@@ -7,6 +7,18 @@ const Query = {
     jobs: async () => await Jobs.find().exec(),
 };
 
+const Mutation = {
+    createJob: async (root, { companyId, title, description }) => {
+        const jobs = new Jobs({
+            title,
+            description,
+            company: companyId,
+        });
+        const { _id } = await jobs.insert();
+        return _id;
+    },
+};
+
 const Job = {
     company: async job => await Companies.findById(job.company).exec(),
 };
@@ -17,6 +29,7 @@ const Company = {
 
 module.exports = {
     Query,
+    Mutation,
     Job,
     Company,
 };
