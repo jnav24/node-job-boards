@@ -8,7 +8,11 @@ const Query = {
 };
 
 const Mutation = {
-    createJob: async (root, { input: { companyId, title, description } }) => {
+    createJob: async (root, { input: { companyId, title, description } }, context) => {
+        if (!context.user) {
+            throw new Error('Unauthorized');
+        }
+
         const jobs = new Jobs({
             title,
             description,
