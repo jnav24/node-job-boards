@@ -8,14 +8,13 @@ const Query = {
 };
 
 const Mutation = {
-    createJob: async (root, { companyId, title, description }) => {
+    createJob: async (root, { input: { companyId, title, description } }) => {
         const jobs = new Jobs({
             title,
             description,
             company: companyId,
         });
-        const { _id } = await jobs.insert();
-        return _id;
+        return jobs.insert();
     },
 };
 
