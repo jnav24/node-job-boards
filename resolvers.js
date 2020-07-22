@@ -1,5 +1,6 @@
 const Companies = require('./models/companies');
 const Jobs = require('./models/postings');
+const Users = require('./models/users');
 
 const Query = {
     company: async (root, args) => await Companies.findById(args.id).exec(),
@@ -8,15 +9,21 @@ const Query = {
 };
 
 const Mutation = {
-    createJob: async (root, { input: { companyId, title, description } }, context) => {
+    createJob: async (root, { input: { title, description } }, context) => {
         if (!context.user) {
+            throw new Error('Unauthorized');
+        }
+
+        const user = await Users.findById(context.user.sub);
+
+        if (!user) {
             throw new Error('Unauthorized');
         }
 
         const jobs = new Jobs({
             title,
             description,
-            company: companyId,
+            company: user.company,
         });
         return jobs.insert();
     },
