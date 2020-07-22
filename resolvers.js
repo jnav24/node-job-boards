@@ -11,7 +11,12 @@ const Job = {
     company: async job => await Companies.findById(job.company).exec(),
 };
 
+const Company = {
+    jobs: async company => await Jobs.find({ company: company.id }).exec(),
+};
+
 module.exports = {
     Query,
     Job,
+    Company,
 };
