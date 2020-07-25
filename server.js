@@ -1,8 +1,11 @@
+const { ApolloServer, gql } = require('apollo-server-express');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const expressJwt = require('express-jwt');
+const fs = require('fs');
+const init = require('./scripts/js/init');
 const jwt = require('jsonwebtoken');
 const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 const mongoose = require('mongoose');
@@ -11,6 +14,9 @@ const saltRounds = 10;
 
 const app = express();
 
+init.insertData();
+
+// @todo delete this
 mongoose.connect('mongodb://job:boards@localhost:27017/jobBoards', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -29,6 +35,18 @@ app.use(
         credentialsRequired: false
     })
 );
+
+const typeDefs = gql(fs.readFileSync('./schema.graphql', { encoding: 'utf8' }));
+const resolvers = require('./resolvers');
+const apolloServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => ({
+        method: req.method,
+        user: req.user,
+    })
+});
+apolloServer.applyMiddleware({ app, path: '/graphql' });
 
 app.get('/postings', async (req, res) => {
     try {
@@ -62,10 +80,9 @@ app.post('/login', async (req, res) => {
         return;
     }
 
-    const hashPwd = bcrypt.hashSync(password, saltRounds);
     const user = await Users.findOne({ email }).exec();
 
-    if (!user || user.password !== hashPwd) {
+    if (!user || !bcrypt.compareSync(password, user.password)) {
         res.sendStatus(401);
         return;
     }
