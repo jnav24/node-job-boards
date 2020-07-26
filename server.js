@@ -8,19 +8,12 @@ const fs = require('fs');
 const init = require('./scripts/js/init');
 const jwt = require('jsonwebtoken');
 const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
-const mongoose = require('mongoose');
 const port = 9000;
 const saltRounds = 10;
 
 const app = express();
 
 init.insertData();
-
-// @todo delete this
-mongoose.connect('mongodb://job:boards@localhost:27017/jobBoards', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
 
 const Companies = require('./models/companies');
 const Postings = require('./models/postings');
@@ -100,11 +93,10 @@ app.post('/register', async (req, res) => {
     }
 
     const user = new Users({
-        _id: new mongoose.Types.ObjectId(),
         email,
         password: bcrypt.hashSync(password, saltRounds),
     });
-    user.save();
+    user.insert();
 
     res.send({
         message: 'User added!',
