@@ -7,4 +7,12 @@ const UsersSchema = mongoose.Schema({
     company: { type: mongoose.Schema.Types.ObjectId, ref: 'Companies' }
 });
 
+UsersSchema.methods.insert = function () {
+    return mongoose.model('Users').create({
+        _id: new mongoose.Types.ObjectId(),
+        email: this.email,
+        password: this.password,
+    });
+};
+
 module.exports = mongoose.model('Users', UsersSchema);
