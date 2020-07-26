@@ -20,6 +20,6 @@ yarn && yarn start
 
 By running Yarn, it will insert seed data into MongoDB and start the Node server. 
 
-The server is on http://localhost:9000
+The server is on [http://localhost:9000](http://localhost:9000)
 
-The GraphQL is on http://localhost:9000/graphql
+The GraphQL is on [http://localhost:9000/graphql](http://localhost:9000/graphql)
